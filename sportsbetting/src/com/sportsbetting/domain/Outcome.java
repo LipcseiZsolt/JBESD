@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sportsbetting.domain;
+package com.sportsbetting.domain;
 
 import java.util.List;
 
@@ -57,5 +57,12 @@ public class Outcome {
     public void setBet(Bet bet) {
         this.bet = bet;
     }
+
+    public Outcome(String description, List<OutcomeOdd> outcomeOdds, Bet bet) {
+        this.description = description;
+        this.outcomeOdds = outcomeOdds;
+        this.bet = bet;
+    }
+    
     
 }

@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sportsbetting.domain;
+package com.sportsbetting.domain;
 
+import com.sportsbetting.builder.SportEventBuilder;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -87,5 +89,11 @@ public abstract class SportEvent {
      */
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    public SportEvent(String title, LocalDateTime startDate) {
+        this.title = title;
+        this.startDate = startDate;
+        this.bets = new LinkedList<>();
     }
 }

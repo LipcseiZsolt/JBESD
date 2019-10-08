@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sportsbetting.domain;
+package com.sportsbetting.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,7 +16,6 @@ public class OutcomeOdd {
     private BigDecimal value;
     private LocalDateTime validFrom;
     private LocalDateTime validUntil;
-    private Wager wager;
     private Outcome outcome;
 
     /**
@@ -62,20 +61,6 @@ public class OutcomeOdd {
     }
 
     /**
-     * @return the wager
-     */
-    public Wager getWager() {
-        return wager;
-    }
-
-    /**
-     * @param wager the wager to set
-     */
-    public void setWager(Wager wager) {
-        this.wager = wager;
-    }
-
-    /**
      * @return the outcome
      */
     public Outcome getOutcome() {
@@ -88,6 +73,14 @@ public class OutcomeOdd {
     public void setOutcome(Outcome outcome) {
         this.outcome = outcome;
     }
+
+    public OutcomeOdd(BigDecimal value, LocalDateTime validFrom, LocalDateTime validUntil, Outcome outcome) {
+        this.value = value;
+        this.validFrom = validFrom;
+        this.validUntil = validUntil;
+        this.outcome = outcome;
+    }
+    
     
     
 }
