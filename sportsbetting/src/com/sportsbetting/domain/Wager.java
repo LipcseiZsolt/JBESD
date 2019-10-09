@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 public class Wager {
     private BigDecimal amount;
     private LocalDateTime timestampCreated;
-    private Boolean processed;
-    private Boolean win;
+    private Boolean isProcessed;
+    private Boolean isWin;
     private Currency currency;
     private Player player;
     private OutcomeOdd odd;
@@ -45,29 +45,29 @@ public class Wager {
     /**
      * @return the processed
      */
-    public boolean isProcessed() {
-        return processed;
+    public boolean getIsProcessed() {
+        return isProcessed;
     }
 
     /**
-     * @param processed the processed to set
+     * @param isProcessed
      */
-    public void setProcessed(boolean processed) {
-        this.processed = processed;
+    public void setIsProcessed(boolean isProcessed) {
+        this.isProcessed = isProcessed;
     }
 
     /**
      * @return the win
      */
-    public boolean isWin() {
-        return win;
+    public boolean getIsWin() {
+        return isWin;
     }
 
     /**
      * @param win the win to set
      */
-    public void setWin(boolean win) {
-        this.win = win;
+    public void setIsWin(boolean win) {
+        this.isWin = win;
     }
 
     /**
@@ -118,7 +118,7 @@ public class Wager {
         this.player = player;
         this.odd = outcomeodd;
         this.timestampCreated = LocalDateTime.now();
-        this.processed = Boolean.FALSE;
+        this.isProcessed = Boolean.FALSE;
     }
     
     
