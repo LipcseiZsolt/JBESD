@@ -144,7 +144,10 @@ public class SportsBettingService implements ISportsBettingService{
     public void calculateResults() {
         Random r = new Random();
         int amount = 0; 
+        int oddsSize;
         for (Wager wager : wagers) {
+            oddsSize = wager.getOdd().getOutcome().getOutcomeOdds().size()-1;
+            wager.setOdd(wager.getOdd().getOutcome().getOutcomeOdds().get(oddsSize));
             if (wager.getPlayer() == player)
                 wager.setIsProcessed(r.nextBoolean());
                     if(wager.getIsProcessed()) {
