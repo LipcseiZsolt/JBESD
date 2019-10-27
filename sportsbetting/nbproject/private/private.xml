@@ -9,24 +9,22 @@
             <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/domain/Currency.java</file>
             <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/domain/TennisSportEvent.java</file>
             <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/domain/FootballSportEvent.java</file>
+            <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/domain/User.java</file>
+            <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/service/SportsBettingService.java</file>
+            <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/domain/Outcome.java</file>
             <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/domain/OutcomeOdd.java</file>
+            <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/domain/Result.java</file>
             <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/domain/Bet.java</file>
             <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/domain/Wager.java</file>
-            <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/service/ISportsBettingService.java</file>
+            <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/builder/OutcomeBuilder.java</file>
             <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/builder/WagerBuilder.java</file>
             <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/factory/AppFactory.java</file>
+            <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/builder/BetBuilder.java</file>
             <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/view/View.java</file>
+            <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/builder/PlayerBuilder.java</file>
             <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/converter/CurrencyConverter.java</file>
             <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/builder/SportEventBuilder.java</file>
-            <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/service/SportsBettingService.java</file>
-            <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/domain/User.java</file>
-            <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/domain/Outcome.java</file>
-            <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/domain/Result.java</file>
-            <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/builder/OutcomeBuilder.java</file>
-            <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/builder/BetBuilder.java</file>
-            <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/builder/PlayerBuilder.java</file>
             <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/App.java</file>
-            <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/view/IView.java</file>
             <file>file:/C:/Users/Lipcsei%20Zsolt/Desktop/OE/5.%20félév/JEE/Housework/sportsbetting/src/com/sportsbetting/domain/Player.java</file>
         </group>
     </open-files>
