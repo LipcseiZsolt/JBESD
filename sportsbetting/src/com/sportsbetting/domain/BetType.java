@@ -10,5 +10,14 @@ package com.sportsbetting.domain;
  * @author Lipcsei Zsolt
  */
 public enum BetType {
-    WINNER, GOALS, PLAYERS_SCORE, NUMBER_OF_SETS
+    WINNER("WINNER"),
+    GOALS("GOALS"),
+    PLAYERS_SCORE("PLAYERSSCORE"),
+    NUMBER_OF_SETS("NUMBEROFSETS");
+    
+    public final String type;
+    
+    private BetType(String type){
+        this.type = type;
+    }
 }

@@ -6,15 +6,19 @@
 package com.sportsbetting.factory;
 
 import com.sportsbetting.App;
-import com.sportsbetting.service.SportsBettingService;
-import com.sportsbetting.view.View;
+import com.sportsbetting.service.SportsBettingServiceImpl;
+import com.sportsbetting.view.ViewImpl;
 
 /**
  *
  * @author Lipcsei Zsolt
  */
-public class AppFactory {
+public final class AppFactory {
+    
+    private AppFactory() {}
+    
     public static App getApp(){
-        return new App(new SportsBettingService(), new View());
+        return new App(new SportsBettingServiceImpl(), new ViewImpl());
     }
+    
 }

@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 public class SportEventBuilder {
     private String title;
     private LocalDateTime startDate;
-    private LocalDateTime endDate;
     
     public void setTitle(String title){
         this.title = title;

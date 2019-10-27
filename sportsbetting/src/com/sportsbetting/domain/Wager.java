@@ -14,13 +14,22 @@ import java.time.LocalDateTime;
  */
 public class Wager {
     private BigDecimal amount;
-    private LocalDateTime timestampCreated;
-    private Boolean isProcessed;
-    private Boolean isWin;
+    private final LocalDateTime timestampCreated;
+    private boolean processed;
+    private boolean win;
     private Currency currency;
     private Player player;
     private OutcomeOdd odd;
     
+    public Wager(BigDecimal amount, Currency currency, Player player, OutcomeOdd outcomeodd) {
+        this.amount = amount;
+        this.currency = currency;
+        this.player = player;
+        this.odd = outcomeodd;
+        this.timestampCreated = LocalDateTime.now();
+        this.processed = Boolean.FALSE;
+    }
+        
     /**
      * @return the amount
      */
@@ -45,29 +54,29 @@ public class Wager {
     /**
      * @return the processed
      */
-    public boolean getIsProcessed() {
-        return isProcessed;
+    public boolean isProcessed() {
+        return processed;
     }
 
     /**
-     * @param isProcessed
+     * @param processed
      */
-    public void setIsProcessed(boolean isProcessed) {
-        this.isProcessed = isProcessed;
+    public void setProcessed(boolean processed) {
+        this.processed = processed;
     }
 
     /**
      * @return the win
      */
-    public boolean getIsWin() {
-        return isWin;
+    public boolean isWin() {
+        return win;
     }
 
     /**
      * @param win the win to set
      */
-    public void setIsWin(boolean win) {
-        this.isWin = win;
+    public void setWin(boolean win) {
+        this.win = win;
     }
 
     /**
@@ -112,14 +121,4 @@ public class Wager {
         this.odd = odd;
     }
 
-    public Wager(BigDecimal amount, Currency currency, Player player, OutcomeOdd outcomeodd) {
-        this.amount = amount;
-        this.currency = currency;
-        this.player = player;
-        this.odd = outcomeodd;
-        this.timestampCreated = LocalDateTime.now();
-        this.isProcessed = Boolean.FALSE;
-    }
-    
-    
 }
