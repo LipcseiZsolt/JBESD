@@ -5,8 +5,8 @@
  */
 package com.sportsbetting.domain;
 
-import com.sportsbetting.builder.SportEventBuilder;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,6 +20,13 @@ public abstract class SportEvent {
     private LocalDateTime endDate;
     private Result result;
     private List<Bet> bets;
+    
+    public SportEvent(String title, LocalDateTime startDate) {
+        this.title = title;
+        this.startDate = startDate;
+        this.bets = new LinkedList<>();
+    }
+    
     
     /**
      * @return the result
@@ -39,7 +46,7 @@ public abstract class SportEvent {
      * @return the bets
      */
     public List<Bet> getBets() {
-        return bets;
+        return new ArrayList<>(bets);
     }
 
     /**
@@ -90,10 +97,5 @@ public abstract class SportEvent {
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
-
-    public SportEvent(String title, LocalDateTime startDate) {
-        this.title = title;
-        this.startDate = startDate;
-        this.bets = new LinkedList<>();
-    }
+    
 }

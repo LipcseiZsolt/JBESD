@@ -5,50 +5,42 @@
  */
 package com.sportsbetting;
 
-import com.sportsbetting.builder.BetBuilder;
-import com.sportsbetting.builder.OutcomeBuilder;
-import com.sportsbetting.builder.OutcomeOddBuilder;
 import com.sportsbetting.factory.AppFactory;
 import com.sportsbetting.builder.WagerBuilder;
-import com.sportsbetting.service.ISportsBettingService;
-import com.sportsbetting.service.SportsBettingService;
-import com.sportsbetting.view.IView;
-import com.sportsbetting.view.View;
 import java.io.IOException;
-import java.util.Scanner;
-import com.sportsbetting.builder.SportEventBuilder;
-import com.sportsbetting.domain.Bet;
-import com.sportsbetting.domain.BetType;
-import com.sportsbetting.domain.Outcome;
 import com.sportsbetting.domain.OutcomeOdd;
-import com.sportsbetting.domain.SportEvent;
 import com.sportsbetting.domain.Wager;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.LinkedList;
+import com.sportsbetting.service.SportsBettingService;
+import com.sportsbetting.view.View;
 
 /**
  *
  * @author Lipcsei Zsolt
  */
 public class App {
-    private final ISportsBettingService service;
-    private final IView view;
+    private final SportsBettingService service;
+    private final View view;
     
-    public App(ISportsBettingService service, IView view){
+    /**
+     * @param args the command line arguments
+     * @throws java.io.IOException
+     */
+    public static void main(String[] args) throws IOException {
+        App app = AppFactory.getApp();
+        app.Play();
+    }
+    
+    public App(SportsBettingService service, View view){
         this.service = service;
         this.view = view;
     }
     
     public void Play() throws IOException{
-        Scanner sc = new Scanner(System.in);
-        
-        this.createPlayer();
-        this.doBetting();
-        String in;
+        createPlayer();
+        doBetting();
         while(true){
-            this.doBetting();
+            doBetting();
         }
     }
     
@@ -86,15 +78,12 @@ public class App {
     
     private void calculateResults() throws IOException{
         service.calculateResults();
-        view.printResults(service.findPlayer(), service.findAllWagers());
+        printResults();
         System.in.read();
     }
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) throws IOException {
-        App app = AppFactory.getApp();
-        app.Play();
+    private void printResults(){
+        view.printResults(service.findPlayer(), service.findAllWagers());
     }
+
 }

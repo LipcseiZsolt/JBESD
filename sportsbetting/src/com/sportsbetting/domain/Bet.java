@@ -5,6 +5,7 @@
  */
 package com.sportsbetting.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,7 +36,7 @@ public class Bet {
      * @return the outcomes
      */
     public List<Outcome> getOutcomes() {
-        return outcomes;
+        return new ArrayList<>(outcomes);
     }
 
     /**

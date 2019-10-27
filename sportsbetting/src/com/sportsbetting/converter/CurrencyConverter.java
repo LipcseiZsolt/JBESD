@@ -11,7 +11,10 @@ import com.sportsbetting.domain.Currency;
  *
  * @author Lipcsei Zsolt
  */
-public class CurrencyConverter {
+public final class CurrencyConverter {
+    
+    private CurrencyConverter() {}
+    
     public static Currency StringToCurrency(String str){
         str = str.toUpperCase();
         switch(str){
@@ -21,6 +24,19 @@ public class CurrencyConverter {
                 return Currency.EUR;
             case("USD"):
                 return Currency.USD;
+            default:
+                throw new IllegalArgumentException("Not supported currency..");
+        }
+    }
+    
+    public static String CurrencyToString(Currency curr){
+        switch(curr){
+            case HUF:
+                return "HUF";
+            case EUR:
+                return "EUR";
+            case USD:
+                return "USD";
             default:
                 throw new IllegalArgumentException("Not supported currency..");
         }

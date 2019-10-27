@@ -10,5 +10,13 @@ package com.sportsbetting.domain;
  * @author Lipcsei Zsolt
  */
 public enum Currency {
-    HUF, EUR, USD
+    HUF("HUF"),
+    EUR("EUR"),
+    USD("USD");
+    
+    public final String curr;
+    
+    private Currency(String curr){
+        this.curr = curr;
+    }
 }
