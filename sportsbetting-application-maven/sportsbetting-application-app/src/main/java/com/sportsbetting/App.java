@@ -5,12 +5,19 @@
  */
 package com.sportsbetting;
 
-import com.sportsbetting.factory.AppFactory;
 import com.sportsbetting.builder.WagerBuilder;
+import com.sportsbetting.config.AppConfig;
+
 import java.io.IOException;
+
 import com.sportsbetting.domain.OutcomeOdd;
 import com.sportsbetting.domain.Wager;
 import java.math.BigDecimal;
+
+
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import com.sportsbetting.service.SportsBettingService;
 import com.sportsbetting.view.View;
 
@@ -27,8 +34,11 @@ public class App {
      * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {
-        App app = AppFactory.getApp();
-        app.Play();
+    	try (ConfigurableApplicationContext appContext = new AnnotationConfigApplicationContext(AppConfig.class)) {
+            App app = appContext.getBean(App.class);
+            app.Play();
+            }
+
     }
     
     public App(SportsBettingService service, View view){

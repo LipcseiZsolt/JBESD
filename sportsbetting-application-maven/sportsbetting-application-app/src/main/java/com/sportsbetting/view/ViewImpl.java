@@ -8,7 +8,12 @@ package com.sportsbetting.view;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
+
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
+
 import com.sportsbetting.builder.PlayerBuilder;
 import com.sportsbetting.converter.CurrencyConverter;
 import com.sportsbetting.domain.Bet;
@@ -25,12 +30,15 @@ import java.time.format.DateTimeFormatter;
  *
  * @author Lipcsei Zsolt
  */
-public class ViewImpl implements View {
+public class ViewImpl implements View, MessageSourceAware {
 
-    Scanner sc;
-    StringBuilder sr;
-    DateTimeFormatter formatter;
-
+	private Locale locale;
+	private Scanner sc;
+    private StringBuilder sr;
+    private DateTimeFormatter formatter;
+    
+    private MessageSource messageSource;
+    
     public ViewImpl() {
         this.sc = new Scanner(System.in);
         this.sr = new StringBuilder();
@@ -40,11 +48,11 @@ public class ViewImpl implements View {
     @Override
     public Player readPlayerData() {
         PlayerBuilder pb = new PlayerBuilder();
-        System.out.println("What is your name?");
+        System.out.println(messageSource.getMessage("msg.name", null, locale));
         pb.setName(sc.nextLine());
-        System.out.println("How much money do you have?");
+        System.out.println(messageSource.getMessage("msg.money", null, locale));
         pb.setBalance(sc.nextBigDecimal());
-        System.out.println("What is your currency? (HUF, EUR or USD)");
+        System.out.println(messageSource.getMessage("msg.currency", null, locale));
         String readedCurrency;
         boolean rightCurrency = false;
         do {
@@ -58,7 +66,7 @@ public class ViewImpl implements View {
             if (rightCurrency) {
                 break;
             }
-            System.out.println("Not supported currency.. \nWhat is your currency? (HUF, EUR or USD)");
+            System.out.println(messageSource.getMessage("msg.currencyException", null, locale));
         } while (true);
 
         pb.setCurrency(CurrencyConverter.StringToCurrency(readedCurrency));
@@ -67,34 +75,34 @@ public class ViewImpl implements View {
 
     @Override
     public void printWelcomeMessage(Player player) {
-        System.out.println(String.format("Welcome %s!", player.getName()));
+        System.out.println(messageSource.getMessage("msg.welcome", new Object[] {player.getName()}, locale));
     }
 
     @Override
     public void printBalance(Player player) {
-        System.out.println(String.format("Your balance is %s %s", player.getBalance().toString(), player.getCurrency().toString()));
+        System.out.println(messageSource.getMessage("msg.balance", new Object[] {player.getBalance().toString(), player.getCurrency().toString()}, locale));
     }
 
     @Override
     public void printOutcomeOdds(List<SportEvent> sportEvents) {
         StringBuilder temp = new StringBuilder();
-        System.out.println("What are you want to bet on? (choose a number or press q for quit)");
+        System.out.println(messageSource.getMessage("play.doBet", null, locale));
         int betIdx = 0;
         List<OutcomeOdd> tempOutcomeOdds = new LinkedList<>();
         OutcomeOdd actualOutcomeOdd;
         for (SportEvent sportEvent : sportEvents) {
-            temp.append(String.format("%d: Sport event: %s, (start: %s), ", ++betIdx, sportEvent.getTitle(), sportEvent.getStartDate().format(formatter)));
+            temp.append(messageSource.getMessage("play.sportEvent", new Object[] { ++betIdx, sportEvent.getTitle(), sportEvent.getStartDate().format(formatter)}, locale));
             for (Bet bet : sportEvent.getBets()) {
                 if (sportEvent.getBets().indexOf(bet) > 0) {
-                    temp.append(String.format("%d: Sport event: %s, (start: %s), ", ++betIdx, sportEvent.getTitle(), sportEvent.getStartDate().format(formatter)));
+                    temp.append(messageSource.getMessage("play.sportEvent", new Object[] {++betIdx, sportEvent.getTitle(), sportEvent.getStartDate().format(formatter)}, locale));
                 }
-                temp.append(String.format("Bet: %s, ", bet.getDescription()));
+                temp.append(messageSource.getMessage("play.Bet", new Object[] {bet.getDescription()}, locale));
                 for (Outcome outcome : bet.getOutcomes()) {
                     if (bet.getOutcomes().indexOf(outcome) > 0) {
-                        temp.append(String.format("%d: Sport event: %s, (start: %s), ", ++betIdx, sportEvent.getTitle(), sportEvent.getStartDate().format(formatter)));
-                        temp.append(String.format("Bet: %s, ", bet.getDescription()));
+                        temp.append(messageSource.getMessage("play.sportEvent", new Object[] { ++betIdx, sportEvent.getTitle(), sportEvent.getStartDate().format(formatter)}, locale));
+                        temp.append(messageSource.getMessage("play.Bet", new Object[] {bet.getDescription()}, locale));
                     }
-                    temp.append(String.format("Outcome: %s, ", outcome.getDescription()));
+                    temp.append(messageSource.getMessage("play.printOutcome", new Object[] {outcome.getDescription()}, locale));
                     for(OutcomeOdd outcomeOdd : outcome.getOutcomeOdds()){
                         if (outcomeOdd.getValidFrom().isBefore(LocalDateTime.now()) && outcomeOdd.getValidUntil().isAfter(LocalDateTime.now()))
                             tempOutcomeOdds.add(outcomeOdd);
@@ -103,7 +111,7 @@ public class ViewImpl implements View {
                         actualOutcomeOdd = tempOutcomeOdds.stream().max((odd1, odd2) -> {
                              return odd1.getValue().compareTo(odd2.getValue());
                         }).get();
-                        temp.append(String.format("Actual odd: %s, Valid between %s and %s.\n", actualOutcomeOdd.getValue().toString(), actualOutcomeOdd.getValidFrom().format(formatter), actualOutcomeOdd.getValidUntil().format(formatter)));
+                        temp.append(messageSource.getMessage("play.printOdd", new Object[] { actualOutcomeOdd.getValue().toString(), actualOutcomeOdd.getValidFrom().format(formatter), actualOutcomeOdd.getValidUntil().format(formatter) }, locale));
                         sr.append(temp.toString());
                     }
                     tempOutcomeOdds.clear();
@@ -149,33 +157,42 @@ public class ViewImpl implements View {
 
     @Override
     public BigDecimal readWagerAmount() {
-        System.out.println("What amount do you wish to bet on it?");
+        System.out.println(messageSource.getMessage("play.amount", null, locale));
         return sc.nextBigDecimal();
 
     }
-
+    
     @Override
     public void printWagerSaved(Wager wager) {
-        System.out.println(String.format("Wager '%s=%s' of %s [odd: %s, amount: %s] saved!", wager.getOdd().getOutcome().getBet().getDescription(), wager.getOdd().getOutcome().getDescription(),
-                wager.getOdd().getOutcome().getBet().getEvent().getTitle(), wager.getOdd().getValue().toString(), wager.getAmount().toString()));
+        System.out.println(messageSource.getMessage("play.wagerSaved", new Object[] { wager.getOdd().getOutcome().getBet().getDescription(), wager.getOdd().getOutcome().getDescription(),
+                wager.getOdd().getOutcome().getBet().getEvent().getTitle(), wager.getOdd().getValue().toString(), wager.getAmount().toString()}, locale));
     }
 
     @Override
     public void printNotEnoughBalance(Player player) {
-        System.out.println(String.format("You don't have enough money, your balance is %s %s", player.getBalance().toString(), player.getCurrency()));
+        System.out.println(messageSource.getMessage("play.notEnoughMoney", new Object[] { player.getBalance().toString(), player.getCurrency()}, locale));
     }
 
     @Override
     public void printResults(Player player, List<Wager> wagers) {
-        sr.append("Results:\n");
+        sr.append(messageSource.getMessage("play.result", null, locale));
         for (Wager wager : wagers) {
-            sr.append(String.format("Wager '%s=%s' of %s [odd: %s, amount: %s], win: %s\n", wager.getOdd().getOutcome().getBet().getDescription(), wager.getOdd().getOutcome().getDescription(),
-                    wager.getOdd().getOutcome().getBet().getEvent().getTitle(), wager.getOdd().getValue().toString(), wager.getAmount().toString(), wager.isWin()));
+            sr.append(messageSource.getMessage("play.results", new Object[] { wager.getOdd().getOutcome().getBet().getDescription(), wager.getOdd().getOutcome().getDescription(),
+                    wager.getOdd().getOutcome().getBet().getEvent().getTitle(), wager.getOdd().getValue().toString(), wager.getAmount().toString(), wager.isWin()}, locale));
         }
-        sr.append(String.format("Your new balance is %s %s.", player.getBalance().toString(), player.getCurrency()));
+        sr.append(messageSource.getMessage("play.newBalance", new Object[] { player.getBalance().toString(), player.getCurrency()}, locale));
 
         System.out.println(sr.toString());
         sr.setLength(0);
     }
 
+	@Override
+	public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+		
+	}
+	
+    public void setLocale(Locale locale) {
+		this.locale = locale;
+	}
 }

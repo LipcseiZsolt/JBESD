@@ -17,7 +17,7 @@ public final class AppFactory {
     
     private AppFactory() {}
     
-    public static App getApp(){
+    public App getApp(){
         return new App(new SportsBettingServiceImpl(), new ViewImpl());
     }
     
