@@ -5,10 +5,12 @@
  */
 package com.sportsbetting.domain;
 
+
 /**
  *
  * @author Lipcsei Zsolt
  */
+
 public enum Currency {
     HUF("HUF"),
     EUR("EUR"),

@@ -8,14 +8,30 @@ package com.sportsbetting.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 /**
  *
  * @author Lipcsei Zsolt
  */
+@Entity
 public class Bet {
+	@Id
+	@GeneratedValue
+	private long id;
     private String description;
+    @OneToMany(targetEntity=Outcome.class, mappedBy="bet", fetch=FetchType.EAGER)
     private List<Outcome> outcomes;
+    @Enumerated(EnumType.STRING)
     private BetType bet;
+    @ManyToOne(targetEntity=SportEvent.class, fetch=FetchType.EAGER)
     private SportEvent event;
     
     /**
@@ -81,5 +97,6 @@ public class Bet {
         this.event = event;
     }
     
+    public Bet() {}
     
 }

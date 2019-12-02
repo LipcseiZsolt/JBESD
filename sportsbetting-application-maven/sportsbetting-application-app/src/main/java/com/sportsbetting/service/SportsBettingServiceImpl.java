@@ -14,8 +14,16 @@ import com.sportsbetting.domain.BetType;
 import com.sportsbetting.domain.Outcome;
 import com.sportsbetting.domain.OutcomeOdd;
 import com.sportsbetting.domain.Player;
+import com.sportsbetting.domain.Result;
 import com.sportsbetting.domain.SportEvent;
 import com.sportsbetting.domain.Wager;
+import com.sportsbetting.repository.BetRepository;
+import com.sportsbetting.repository.OutcomeOddRepository;
+import com.sportsbetting.repository.OutcomeRepository;
+import com.sportsbetting.repository.ResultRepository;
+import com.sportsbetting.repository.SportEventRepository;
+import com.sportsbetting.repository.UserRepository;
+import com.sportsbetting.repository.WagerRepository;
 
 import java.math.BigDecimal;
 import java.util.LinkedList;
@@ -23,7 +31,10 @@ import java.util.List;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
+
+import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  *
@@ -32,18 +43,78 @@ import java.util.Random;
 public class SportsBettingServiceImpl implements SportsBettingService{
     
     private Player player;
-    private final List<Wager> wagers;
-    private final List<SportEvent> sportEvents;
-
-    public SportsBettingServiceImpl(){
-        this.wagers = new LinkedList<>();
-        this.sportEvents = new LinkedList<>();
-        setMockData();
+    
+    private WagerRepository wagerRepository;
+	private SportEventRepository sportEventRepository;
+    private BetRepository betRepository;
+    private ResultRepository resultRepository;
+    private OutcomeRepository outcomeRepository;
+    private OutcomeOddRepository outcomeOddRepository;
+    private UserRepository userRepository;
+    
+	public SportsBettingServiceImpl(){
     }
     
+    public WagerRepository getWagerRepository() {
+		return wagerRepository;
+	}
+
+	public void setWagerRepository(WagerRepository wagerRepository) {
+		this.wagerRepository = wagerRepository;
+	}
+
+	public SportEventRepository getSportEventRepository() {
+		return sportEventRepository;
+	}
+
+	public void setSportEventRepository(SportEventRepository sportEventRepository) {
+		this.sportEventRepository = sportEventRepository;
+	}
+
+	public BetRepository getBetRepository() {
+		return betRepository;
+	}
+
+	public void setBetRepository(BetRepository betRepository) {
+		this.betRepository = betRepository;
+	}
+
+	public ResultRepository getResultRepository() {
+		return resultRepository;
+	}
+
+	public void setResultRepository(ResultRepository resultRepository) {
+		this.resultRepository = resultRepository;
+	}
+
+	public OutcomeRepository getOutcomeRepository() {
+		return outcomeRepository;
+	}
+
+	public void setOutcomeRepository(OutcomeRepository outcomeRepository) {
+		this.outcomeRepository = outcomeRepository;
+	}
+
+	public OutcomeOddRepository getOutcomeOddRepository() {
+		return outcomeOddRepository;
+	}
+
+	public void setOutcomeOddRepository(OutcomeOddRepository outcomeOddRepository) {
+		this.outcomeOddRepository = outcomeOddRepository;
+	}
+
+	public UserRepository getUserRepository() {
+		return userRepository;
+	}
+
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+  
     @Override
     public void savePlayer(Player newPlayer) {
         player = newPlayer;
+        userRepository.save(newPlayer);
     }
 
     @Override
@@ -53,46 +124,75 @@ public class SportsBettingServiceImpl implements SportsBettingService{
 
     @Override
     public List<SportEvent> findAllSportEvents() {
-        return new ArrayList<>(sportEvents);
+        //return new ArrayList<>(sportEvents);
+    	List<SportEvent> re = new LinkedList<>();
+    	sportEventRepository.findAll().forEach(re::add);
+    	return re;
     }
 
     @Override
     public void saveWager(Wager wager) {
         Player wagerPlayer = wager.getPlayer();
         wagerPlayer.setBalance(wagerPlayer.getBalance().subtract(wager.getAmount()));
-        wagers.add(wager);
+        //wagers.add(wager);
+        userRepository.save(player);
+        wagerRepository.save(wager);
     }
 
     @Override
     public List<Wager> findAllWagers() {
-        return new ArrayList<>(wagers);
+        //return new ArrayList<>(wagers);
+    	List<Wager> re = new LinkedList<>();
+    	wagerRepository.findAll().forEach(re::add);
+    	return re;
     }
 
+    
     @Override
     public void calculateResults() {
+    	List<Outcome> winnerOutcomes = new LinkedList<>();
         Random r = new Random();
         int amount = 0; 
         int oddsSize;
-        for (Wager wager : wagers) {
-            oddsSize = wager.getOdd().getOutcome().getOutcomeOdds().size()-1;
-            wager.setOdd(wager.getOdd().getOutcome().getOutcomeOdds().get(oddsSize));
-            if (wager.getPlayer() == player) {
-                wager.setWin(r.nextBoolean());
-                if (wager.isWin()) {
-                    amount += wager.getAmount().multiply(wager.getOdd().getValue()).intValue();
-                    wager.setProcessed(true);
-                }
-            }
+        for (SportEvent sportEvent : findAllSportEvents()) {
+        	winnerOutcomes = sportEvent.getResult().getWinnerOutcomes();
+        	for (Bet bet : sportEvent.getBets()) {
+        		for (Outcome outcome : bet.getOutcomes()) {
+        			if (r.nextBoolean()) {
+        				winnerOutcomes.add(outcome);
+        			}
+        		}
+        	}
+        	sportEvent.getResult().setWinnerOutcomes(winnerOutcomes);
+        	sportEventRepository.save(sportEvent);
+        	resultRepository.save(sportEvent.getResult());
         }
         
+        for (Wager wager : findAllWagers()) {
+            oddsSize = wager.getOdd().getOutcome().getOutcomeOdds().size()-1;
+            wager.setOdd(wager.getOdd().getOutcome().getOutcomeOdds().get(oddsSize));
+            if (wager.getPlayer().getId() == player.getId()) {
+                if (wager.getOdd().getOutcome().getBet().getEvent().getResult().getWinnerOutcomes().contains(wager.getOdd().getOutcome())) {
+                    amount += wager.getAmount().multiply(wager.getOdd().getValue()).intValue();
+                    wager.setProcessed(true);
+                    wager.setWin(true);
+                    winnerOutcomes.add(wager.getOdd().getOutcome());
+                }
+            }
+            wagerRepository.save(wager);
+        }
+        
+        
         player.setBalance(player.getBalance().add(BigDecimal.valueOf(amount)));
+        userRepository.save(player);
     }
-    private void setMockData(){       
+    
+    public void setMockData(){ 
         SportEventBuilder seb = new SportEventBuilder();
         seb.setTitle("Arsenal vs Chelse");
         seb.setStartDate(LocalDateTime.of(2020, Month.JANUARY, 01, 12, 00, 00));
         SportEvent seavc = seb.buildFootballSportEvent();
-        sportEvents.add(seavc);
+        
         
         BetBuilder bb = new BetBuilder();
         bb.setBetType(BetType.PLAYERS_SCORE);
@@ -102,6 +202,7 @@ public class SportsBettingServiceImpl implements SportsBettingService{
         Bet seavcPlayerScoreBet = bb.build();
         List<Bet> seavcBets = seavc.getBets();
         seavcBets.add(seavcPlayerScoreBet);
+        
         
         bb.setBetType(BetType.WINNER);
         bb.setDescription("winner");
@@ -175,5 +276,18 @@ public class SportsBettingServiceImpl implements SportsBettingService{
         List<OutcomeOdd> seavcWinnerOutcomeChelseaOutcomeOdds = seavcWinnerOutcomeChelsea.getOutcomeOdds();
         seavcWinnerOutcomeChelseaOutcomeOdds.add(seavcWinnerBetOutcomeOddChelsea_Three);
         seavcWinnerOutcomeChelsea.setOutcomeOdds(seavcWinnerOutcomeChelseaOutcomeOdds);
+        
+        sportEventRepository.save(seavc);
+        betRepository.saveAll(seavcBets);
+        outcomeRepository.saveAll(seavcPlayerScoreBetOutcomes);
+        outcomeRepository.saveAll(seavcWinnerBetOutcomes);
+        outcomeOddRepository.saveAll(seavcPlayerScoreBetOutcomeOneOutcomeOdds);
+        outcomeOddRepository.saveAll(seavcPlayerScoreBetOutcomeThreeOutcomeOdds);
+        outcomeOddRepository.saveAll(seavcWinnerOutcomeArsenalOutcomeOdds);
+        outcomeOddRepository.saveAll(seavcWinnerOutcomeChelseaOutcomeOdds);
+        outcomeRepository.save(seavcPlayerScoreBetOutcomeThree);
+        outcomeRepository.save(seavcWinnerOutcomeChelsea);
+        outcomeRepository.saveAll(seavcWinnerBetOutcomes);
+        outcomeRepository.save(seavcWinnerOutcomeArsenal);
     }
 }

@@ -5,13 +5,26 @@
  */
 package com.sportsbetting.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
 /**
  *
  * @author Lipcsei Zsolt
  */
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class User {
-    private String email;
+	@Id
+	@GeneratedValue
+	private long id;
+	private String email;
     private String password;
+    
+    public User() {}
     
     /**
      * @return the email
@@ -40,4 +53,8 @@ public abstract class User {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    public long getId() {
+		return id;
+	}
 }

@@ -10,23 +10,43 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 /**
  *
  * @author Lipcsei Zsolt
  */
+@Entity
+@Inheritance
 public abstract class SportEvent {
+	@Id
+	@GeneratedValue
+	private long id;
     private String title;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    @OneToOne(cascade = CascadeType.ALL)
     private Result result;
+    @OneToMany(targetEntity=Bet.class, mappedBy="event", fetch=FetchType.EAGER)
     private List<Bet> bets;
     
     public SportEvent(String title, LocalDateTime startDate) {
         this.title = title;
         this.startDate = startDate;
         this.bets = new LinkedList<>();
+        this.result = new Result();
     }
     
+    public SportEvent() {}
     
     /**
      * @return the result

@@ -8,13 +8,26 @@ package com.sportsbetting.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 /**
  *
  * @author Lipcsei Zsolt
  */
+@Entity
 public class Outcome {
+	@Id
+	@GeneratedValue
+	private long id;
     private String description;
+    @OneToMany(targetEntity=OutcomeOdd.class, mappedBy="outcome", fetch=FetchType.EAGER)
     private List<OutcomeOdd> outcomeOdds;
+    @ManyToOne
     private Bet bet;
     
     /**
@@ -65,5 +78,6 @@ public class Outcome {
         this.bet = bet;
     }
     
+    public Outcome() {}
     
 }

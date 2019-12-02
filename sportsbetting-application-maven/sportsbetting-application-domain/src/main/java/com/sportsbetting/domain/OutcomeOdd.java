@@ -8,14 +8,27 @@ package com.sportsbetting.domain;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 /**
  *
  * @author Lipcsei Zsolt
  */
+@Entity
 public class OutcomeOdd {
+	@Id
+	@GeneratedValue
+	private long id;
     private BigDecimal value;
     private LocalDateTime validFrom;
     private LocalDateTime validUntil;
+    @ManyToOne(targetEntity=Outcome.class, fetch=FetchType.EAGER)
     private Outcome outcome;
 
     /**
@@ -81,6 +94,6 @@ public class OutcomeOdd {
         this.outcome = outcome;
     }
     
-    
+    public OutcomeOdd() {}
     
 }

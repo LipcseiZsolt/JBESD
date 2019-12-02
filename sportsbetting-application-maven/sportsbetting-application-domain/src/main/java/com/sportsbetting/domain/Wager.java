@@ -8,17 +8,33 @@ package com.sportsbetting.domain;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 /**
  *
  * @author Lipcsei Zsolt
  */
+@Entity
 public class Wager {
+	@Id
+	@GeneratedValue
+	private long id;
     private BigDecimal amount;
     private final LocalDateTime timestampCreated;
     private boolean processed;
     private boolean win;
+    @Enumerated(EnumType.STRING)
     private Currency currency;
+    @OneToOne
     private Player player;
+    @OneToOne
     private OutcomeOdd odd;
     
     public Wager(BigDecimal amount, Currency currency, Player player, OutcomeOdd outcomeodd) {
@@ -30,6 +46,10 @@ public class Wager {
         this.processed = Boolean.FALSE;
     }
         
+    public Wager() {
+    	this.timestampCreated = LocalDateTime.now();
+    }
+    
     /**
      * @return the amount
      */

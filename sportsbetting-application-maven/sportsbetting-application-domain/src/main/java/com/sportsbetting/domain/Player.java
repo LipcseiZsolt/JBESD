@@ -8,21 +8,35 @@ package com.sportsbetting.domain;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 /**
  *
  * @author Lipcsei Zsolt
  */
+@Entity
 public class Player extends User {
     private String name;
     private int accountNumber;
     private BigDecimal balance;
     private LocalDate birth;
+    @Enumerated(EnumType.STRING)
     private Currency currency;
     
     public Player(String name, BigDecimal balance, Currency currency){
         this.name = name;
         this.balance = balance;
         this.currency = currency;
+    }
+    
+    public Player() {
+    	super();
     }
     
     /**
