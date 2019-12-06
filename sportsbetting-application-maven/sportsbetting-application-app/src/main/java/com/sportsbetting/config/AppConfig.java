@@ -19,7 +19,7 @@ import com.sportsbetting.service.*;
 import com.sportsbetting.view.*;
 
 @Configuration
-@Import({MessagesConfig.class, SpringConfigDataSource.class})
+@Import({MessagesConfig.class, SpringConfigDataSource.class, SpringConfigJPA.class})
 public class AppConfig {
 	
 	@Value("${default.langauge}")
@@ -48,12 +48,13 @@ public class AppConfig {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
 	@Bean
 	public App app() {
 		return new App(service(), view());
 	}
 	
-	@Bean
+	@Bean(initMethod = "setMockData")
 	public SportsBettingService service() {
 		SportsBettingServiceImpl service = new SportsBettingServiceImpl();
 		service.setBetRepository(betRepository);
@@ -63,7 +64,6 @@ public class AppConfig {
 		service.setSportEventRepository(sportEventRepository);
 		service.setUserRepository(userRepository);
 		service.setWagerRepository(wagerRepository);
-		service.setMockData();
 		return service;
 	}
 	

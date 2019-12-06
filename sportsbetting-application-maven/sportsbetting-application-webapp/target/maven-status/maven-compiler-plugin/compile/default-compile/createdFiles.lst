@@ -1,0 +1,4 @@
+com\sportsbetting\web\configuration\WebInitalizer.class
+com\sportsbetting\web\controllers\HomeController.class
+com\sportsbetting\web\configuration\WebConfig.class
+com\sportsbetting\web\controllers\LoginController.class

@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 
 /**
@@ -25,7 +26,7 @@ public class Result {
 	@Id
 	@GeneratedValue
 	private long id;
-	@OneToMany(targetEntity=Outcome.class, fetch=FetchType.EAGER)
+	@OneToMany
     private List<Outcome> winnerOutcomes;
 
 	public Result() {

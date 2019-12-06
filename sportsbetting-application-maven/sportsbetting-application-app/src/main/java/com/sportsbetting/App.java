@@ -5,7 +5,6 @@
  */
 package com.sportsbetting;
 
-import com.sportsbetting.builder.SportEventBuilder;
 import com.sportsbetting.builder.WagerBuilder;
 import com.sportsbetting.config.AppConfig;
 import com.sportsbetting.config.SpringConfigJPA;
@@ -13,24 +12,16 @@ import com.sportsbetting.config.SpringConfigJPA;
 import java.io.IOException;
 
 import com.sportsbetting.domain.OutcomeOdd;
-import com.sportsbetting.domain.SportEvent;
 import com.sportsbetting.domain.Wager;
-import com.sportsbetting.repository.BetRepository;
-import com.sportsbetting.repository.OutcomeRepository;
-import com.sportsbetting.repository.SportEventRepository;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.sportsbetting.service.SportsBettingService;
-import com.sportsbetting.service.SportsBettingServiceImpl;
 import com.sportsbetting.view.View;
 
 /**
@@ -47,8 +38,7 @@ public class App {
      * @throws SQLException 
      */
     public static void main(String[] args) throws IOException, SQLException {
-    	try (ConfigurableApplicationContext appContext = new AnnotationConfigApplicationContext(AppConfig.class,
-    			SpringConfigJPA.class)) {
+    	try (ConfigurableApplicationContext appContext = new AnnotationConfigApplicationContext(AppConfig.class)) {
     		
             App app = appContext.getBean(App.class);
             app.Play();

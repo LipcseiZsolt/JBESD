@@ -6,6 +6,7 @@
 package com.sportsbetting.builder;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import com.sportsbetting.domain.Currency;
 import com.sportsbetting.domain.Player;
@@ -19,6 +20,15 @@ public class PlayerBuilder {
     private String name;
     private BigDecimal balance;
     private Currency currency;
+    private String email;
+    private String password;
+    private LocalDate birth;
+    
+    public PlayerBuilder() {
+    	this.email = "";
+    	this.password = "";
+    	this.birth = LocalDate.now();
+    }
     
     public void setName(String name){
         this.name = name;
@@ -32,7 +42,26 @@ public class PlayerBuilder {
         this.currency = currency;
     }
     
+    public void setEmail(String email) {
+    	this.email = email;
+    }
+    
+    public void setPassword(String password) {
+    	this.password = password;
+    }
+    
+    public void setBirth(LocalDate birth) {
+    	this.birth = birth;
+    }
+    
     public Player build(){
-        return new Player(this.name, this.balance, this.currency);
+    	Player player = new Player();
+    	player.setEmail(email);
+    	player.setPassword(password);
+    	player.setCurrency(this.currency);
+    	player.setBalance(this.balance);
+    	player.setName(this.name);
+    	player.setBirth(this.birth);
+        return player;
     }
 }

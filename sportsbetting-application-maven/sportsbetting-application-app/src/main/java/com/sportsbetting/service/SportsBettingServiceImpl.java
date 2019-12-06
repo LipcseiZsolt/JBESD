@@ -8,13 +8,14 @@ package com.sportsbetting.service;
 import com.sportsbetting.builder.BetBuilder;
 import com.sportsbetting.builder.OutcomeBuilder;
 import com.sportsbetting.builder.OutcomeOddBuilder;
+import com.sportsbetting.builder.PlayerBuilder;
 import com.sportsbetting.builder.SportEventBuilder;
 import com.sportsbetting.domain.Bet;
 import com.sportsbetting.domain.BetType;
+import com.sportsbetting.domain.Currency;
 import com.sportsbetting.domain.Outcome;
 import com.sportsbetting.domain.OutcomeOdd;
 import com.sportsbetting.domain.Player;
-import com.sportsbetting.domain.Result;
 import com.sportsbetting.domain.SportEvent;
 import com.sportsbetting.domain.Wager;
 import com.sportsbetting.repository.BetRepository;
@@ -28,13 +29,13 @@ import com.sportsbetting.repository.WagerRepository;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.dao.ConcurrencyFailureException;
+
 
 /**
  *
@@ -52,8 +53,7 @@ public class SportsBettingServiceImpl implements SportsBettingService{
     private OutcomeOddRepository outcomeOddRepository;
     private UserRepository userRepository;
     
-	public SportsBettingServiceImpl(){
-    }
+	public SportsBettingServiceImpl(){}
     
     public WagerRepository getWagerRepository() {
 		return wagerRepository;
@@ -187,7 +187,16 @@ public class SportsBettingServiceImpl implements SportsBettingService{
         userRepository.save(player);
     }
     
-    public void setMockData(){ 
+    public void setMockData(){
+    	PlayerBuilder pb = new PlayerBuilder();
+    	pb.setName("Example Example");
+    	pb.setBalance(new BigDecimal(1000));
+    	pb.setCurrency(Currency.HUF);
+    	pb.setEmail("ex@ex.com");
+    	pb.setPassword("password");
+    	pb.setBirth(LocalDate.of(1997, 05, 03));
+    	Player p = pb.build();
+    	
         SportEventBuilder seb = new SportEventBuilder();
         seb.setTitle("Arsenal vs Chelse");
         seb.setStartDate(LocalDateTime.of(2020, Month.JANUARY, 01, 12, 00, 00));
@@ -242,7 +251,7 @@ public class SportsBettingServiceImpl implements SportsBettingService{
         
         OutcomeOddBuilder oob = new OutcomeOddBuilder();
         oob.setOutcome(seavcPlayerScoreBetOutcomeOne);
-        oob.setValue(new BigDecimal(1));
+        oob.setValue(new BigDecimal(1.5));
         oob.setValidFrom(LocalDateTime.of(2000, Month.JANUARY, 01, 12, 0, 0));
         oob.setValidUntil(LocalDateTime.of(2020, Month.JANUARY, 01, 12, 0, 0));
         OutcomeOdd seavcPlayerScoreBetOutcomeOddOne_One = oob.build();
@@ -277,6 +286,7 @@ public class SportsBettingServiceImpl implements SportsBettingService{
         seavcWinnerOutcomeChelseaOutcomeOdds.add(seavcWinnerBetOutcomeOddChelsea_Three);
         seavcWinnerOutcomeChelsea.setOutcomeOdds(seavcWinnerOutcomeChelseaOutcomeOdds);
         
+    	userRepository.save(p);
         sportEventRepository.save(seavc);
         betRepository.saveAll(seavcBets);
         outcomeRepository.saveAll(seavcPlayerScoreBetOutcomes);
